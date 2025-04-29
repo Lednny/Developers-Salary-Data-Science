@@ -4,7 +4,7 @@
 
 ### Clonar el repositorio
 
-```sh
+```bash
 git clone https://github.com/diegodev18/data-science-final-project
 ```
 
@@ -12,13 +12,13 @@ git clone https://github.com/diegodev18/data-science-final-project
 
 #### Windows
 
-```
+```bash
 py -m venv .env
 ```
 
 #### macOS/Linux
 
-```
+```bash
 python3 -m venv .env
 ```
 
@@ -26,13 +26,13 @@ python3 -m venv .env
 
 #### Windows
 
-```
+```bash
 .env\Scripts\activate
 ```
 
 #### macOS/Linux
 
-```
+```bash
 source .env/bin/activate
 ```
 
@@ -40,13 +40,13 @@ source .env/bin/activate
 
 #### Windows
 
-```
+```bash
 pip install -r requirements.txt
 ```
 
 #### macOS/Linux
 
-```
+```bash
 pip3 install -r requirements.txt
 ```
 
@@ -68,12 +68,12 @@ python3 download_db.py
 
 #### Windows
 
-```
-python main.py
+```bash
+python src/main.py
 ```
 
 #### macOS/Linux
 
-```
-python3 main.py
+```bash
+python3 src/main.py
 ```
