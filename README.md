@@ -50,6 +50,20 @@ pip install -r requirements.txt
 pip3 install -r requirements.txt
 ```
 
+### Descargar el dataset
+
+#### Windows
+
+```bash
+py download_db.py
+```
+
+#### macOS/Linux
+
+```bash
+python3 download_db.py
+```
+
 ### Ejecutar el proyecto
 
 #### Windows
