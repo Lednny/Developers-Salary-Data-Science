@@ -14,6 +14,7 @@ def clear_db(DB_PATH: str) -> str | None: # Return the path of the cleaned datab
     df = pd.read_csv(DB_PATH)
     df = df.drop_duplicates()
     df = df.dropna()
+    df['Company Score'] = pd.to_numeric(df['Company Score'], errors='coerce')
     df.to_csv(CLEANED_DB_PATH, index=False)
     print("Done!")
     return CLEANED_DB_PATH
