@@ -3,7 +3,8 @@ import kagglehub
 import sys
 
 if data_set_exists():
-    sys.exit(0)
+    if input('DO YOU WANT TO UPDATE THE DataSet [Y/n]? ').lower() != 'y':
+        sys.exit(0)
 
 # Download latest version
 DATA_SET = "emreksz/software-engineer-jobs-and-salaries-2024"
