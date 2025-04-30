@@ -5,3 +5,4 @@ __pycache__/
 
 # Files
 db_path.json
+cleaned_db.csv
