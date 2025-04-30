@@ -16,10 +16,11 @@ def get_file_with_saved_path_content(OBJ_TO_GET: str = 'PATH') -> str | None:
         return None
 
 
-def saved_db_path_in_file(PATH) -> bool:
+def saved_db_path_in_file(PATH, CSV_FILE: str = "Software Engineer Salaries.csv") -> bool:
+    ULT_PATH = path.join(PATH, CSV_FILE)
     try:
         with open(FILE_WITH_SAVED_PATH, 'w') as f:
-            dump({ "PATH": PATH }, f)
+            dump({ "PATH": ULT_PATH }, f)
         return True
     except Exception:
         return False
