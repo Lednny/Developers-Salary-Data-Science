@@ -3,6 +3,7 @@ from clear_db import clear_db
 import os
 import pandas as pd
 import sys
+import pearson as team_pearson
 
 DB_PATH = get_file_with_saved_path_content()
 
@@ -15,7 +16,8 @@ def main():
     if not CLEANED_DB_PATH: sys.exit(-1)
 
     DATA = pd.read_csv(CLEANED_DB_PATH)
-    print("DataFrame:\n", DATA.head(10))
+
+    team_pearson.main(DATA)
 
 
 if __name__ == "__main__":
