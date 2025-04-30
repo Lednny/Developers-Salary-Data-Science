@@ -1,2 +1,7 @@
+# Directories
 .ropeproject/
 .env/
+__pycache__/
+
+# Files
+db_path.json
