@@ -2,11 +2,18 @@
 
 ## Iniciar el proyecto
 
-### Clonar el repositorio
+### Hacer un fork del repositorio
+
+- Ve a https://github.com/diegodev18/data-science-final-project
+- Haz clic en el botón "Fork" en la esquina superior derecha de la página.
+
+### Clonar tu fork del repositorio
 
 ```bash
-git clone https://github.com/diegodev18/data-science-final-project
+git clone git@github.com:<your_username>/data-science-final-project.git
 ```
+
+> Recuerda que debes usar SSH para clonar el repositorio y poder contribuir al proyecto.
 
 ### Crear un entorno virtual con:
 
