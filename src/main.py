@@ -20,9 +20,6 @@ def main():
 
  resultados = central_tendency(datos)
 
-    print("\nResultados de tendencias centrales:")
-    for clave, valor in resultados.items():
-        print(f"{clave}: {valor}")
 
 
 if __name__ == "__main__":
