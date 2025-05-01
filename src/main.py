@@ -23,6 +23,11 @@ if __name__ == "__main__":
     main()
 
 def central_tendency():
-     serie = pd.Series(lista)
     media = serie.mean()
     mediana = serie.median()
+    moda = serie.mode()
+  return {
+        "media": media,
+        "mediana": mediana,
+        "moda": moda,
+  }
