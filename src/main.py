@@ -22,12 +22,3 @@ def main():
 if __name__ == "__main__":
     main()
 
-def central_tendency():
-    media = serie.mean()
-    mediana = serie.median()
-    moda = serie.mode()
-  return {
-        "media": media,
-        "mediana": mediana,
-        "moda": moda,
-  }
