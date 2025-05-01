@@ -18,6 +18,12 @@ def main():
     DATA = pd.read_csv(CLEANED_DB_PATH)
     print("DataFrame:\n", DATA.head(10))
 
+ resultados = central_tendency(datos)
+
+    print("\nResultados de tendencias centrales:")
+    for clave, valor in resultados.items():
+        print(f"{clave}: {valor}")
+
 
 if __name__ == "__main__":
     main()
