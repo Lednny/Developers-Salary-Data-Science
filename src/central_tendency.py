@@ -1,10 +1,12 @@
 import pandas as pd
-import os 
 
-media = datos.mean()
-mediana = datos.median()
-moda = datos.mode()[0]  
+def central_tendency():
+    media = serie.mean()
+    mediana = serie.median()
+    moda = serie.mode().tolist()
 
-print("Media:", media)
-print("Mediana:", mediana)
-print("Moda:", moda.tolist()) 
+    return {
+        "media": media,
+        "mediana": mediana,
+        "moda": moda,
+    }
