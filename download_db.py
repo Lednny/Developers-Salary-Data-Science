@@ -14,3 +14,14 @@ if saved_db_path_in_file(PATH):
     print(f'DataSet DOWNLOADED in {PATH}')
 else:
     print('ERROR, NOT DOWNLOADED :(')
+
+# Calcular estadísticas descriptivas
+media = data[columna].mean()
+mediana = data[columna].median()
+moda = data[columna].mode().iloc[0]  
+desviacion_estandar = data[columna].std()
+
+print(f"Media: {media}")
+print(f"Mediana: {mediana}")
+print(f"Moda: {moda}")
+print(f"Desviación estándar: {desviacion_estandar}")
