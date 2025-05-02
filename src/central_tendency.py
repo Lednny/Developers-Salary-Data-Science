@@ -1,20 +1,15 @@
-import pandas as pd
+from pandas import Series
 
-def central_tendency(serie, imprimir=True):
-    if not isinstance(serie, pd.Series):
-        serie = pd.Series(serie)
-    
-    result = {
-        "media": serie.mean(),
-        "mediana": serie.median(),
-        "moda": serie.mode().tolist(), 
-        "varianza": serie.var(),
-        "desviacion_estandar": serie.std()
-    }
-    
-    if imprimir:
-        print("Resultados de las tendcias centrales: ")
-        print(result)
-    
-    return result
 
+class Central_Tendency:
+    def __init__(self, serie: Series):
+        self.serie = serie
+        self.mean = serie.mean()
+        self.median = serie.median()
+        self.mode = serie.mode().tolist()
+        self.variance = serie.var()
+        self.standard_deviation = serie.std()
+
+
+    def __str__(self):
+        return f"Resultados de las tendencias centrales:\nMedia: {self.mean}\nMediana: {self.median}\nModa: {self.mode}\nVarianza: {self.variance}\nDesviación estándar: {self.standard_deviation}\n"
