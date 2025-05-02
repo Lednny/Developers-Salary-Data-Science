@@ -1,14 +1,24 @@
-from pandas import DataFrame, Series
+from pandas import Series
 
-def main(df: DataFrame, columns: list[str] | None = None) -> int:
-    if columns is not None and len(columns) >= 2:
-        col1 = df[columns[0]]
-        col2 = df[columns[1]]
-        if type(col1) == Series and type(col2) == Series:
-            correlation = col1.corr(col2, method='pearson')
-            print(f"Correlación de Pearson entre '{columns[0]}' y '{columns[1]}': {correlation}")
-            return 0
-    else:
-        print("Correlación de Pearson entre todas las columnas:")
-        print(df.corr(method='pearson'))
-    return 0
+
+def valid_cols(col1, col2) -> bool:
+    if not isinstance(col1, Series) or not isinstance(col2, Series):
+        print("Error: One or both columns are not Series.")
+        return False
+    return True
+
+
+class Pearson_Correlation:
+    def __init__(self, col1, col2):
+        valid_cols(col1, col2)
+
+        self.col1 = col1
+        self.col2 = col2
+
+
+    def calculate(self) -> float:
+        return self.col1.corr(self.col2)
+
+
+    def __str__(self) -> str:
+        return f"Pearson Correlation: {self.calculate():.2f}"
