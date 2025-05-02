@@ -1,31 +1,15 @@
-import pandas as pd
-import os
-import sys
-from clear_db import clear_db
-from external.json_db_path import get_file_with_saved_path_content
+from pandas import DataFrame
+from utils.get_salaries_mean import get_salaries_mean
 
-def cargar_datos_limpios():
-    DB_PATH = get_file_with_saved_path_content()
 
-    if not DB_PATH or not os.path.exists(DB_PATH):
-        print('No existe la base de datos. Descárgala con el script "download_db.py".')
-        sys.exit(-1)
-
-    CLEANED_DB_PATH = clear_db(DB_PATH)
-    if not CLEANED_DB_PATH:
-        sys.exit(-1)
-
-    df = pd.read_csv(CLEANED_DB_PATH)
-    return df
-
-def analizar_datos(df):
+def analizar_datos(df: DataFrame):
     print("Columnas disponibles:", df.columns.tolist())
 
     # Estadísticas descriptivas
     print("\nEstadísticas descriptivas:\n", df.describe(include='all'))
 
     # Medidas de tendencia central y dispersión
-    salario = df['salary_in_usd']
+    salario = get_salaries_mean(df)
     print("\nMedidas de tendencia central y dispersión:")
     print("Media:", salario.mean())
     print("Mediana:", salario.median())
@@ -82,7 +66,6 @@ def analizar_datos(df):
     else:
         print("No hay columnas 'Company Score' o 'employment_type'.")
 
-if __name__ == "__main__":
-    df = cargar_datos_limpios()
-    analizar_datos(df)
 
+if __name__ == "__main__":
+    analizar_datos(df)
