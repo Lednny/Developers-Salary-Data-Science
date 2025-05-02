@@ -1,5 +1,6 @@
 from external.json_db_path import get_file_with_saved_path_content
 from clear_db import clear_db
+from central_tendency import central_tendency
 import os
 import pandas as pd
 import sys
@@ -19,6 +20,10 @@ def main():
 
     team_pearson.main(DATA)
 
+ resultados = central_tendency(datos)
+
+
 
 if __name__ == "__main__":
     main()
+
