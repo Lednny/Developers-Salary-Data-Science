@@ -1,21 +1,52 @@
-from pandas import DataFrame
+from pandas import DataFrame, Series
 from utils.get_salaries_mean import get_salaries_mean
 
 
+def get_good_or_bad_companies(companies, scores, bad_threshold: int = 3) -> dict[str, dict[str, list[str]]]:
+    if not isinstance(companies, Series) or not isinstance(scores, Series):
+        raise TypeError("Companies and scores must be pandas Series")
+
+    stats = { 'good': { 'companies': [], 'length': 0 }, 'bad': { 'companies': [], 'length': 0 } }
+    for company, score in zip(companies, scores):
+        if score > bad_threshold:
+            stats['good']['companies'].append(company)
+            stats['good']['length'] += 1
+            continue;
+        stats['bad']['companies'].append(company)
+        stats['bad']['length'] += 1
+    return stats
+
+
+class Exploratory_Analysis:
+    def __init__(self, df: DataFrame):
+        self.df = df
+        self.cols = df.columns.tolist()
+        self.descriptive_stats = self.df.describe(include='all')
+        self.salary = get_salaries_mean(self.df)
+        self.top_titles = self.salary.groupby(df['Job Title']).mean() # Paises por título
+        self.top_locations = self.salary.groupby(df['Location']).mean() # Paises por ubicación
+        self.companies_scores = self.df['Company'].groupby(df['Company Score'])
+        self.top_companies = get_good_or_bad_companies(self.df['Company'], self.df['Company Score'])
+
+
+    def __str__(self):
+        lines = [
+            f"Columnas disponibles: {', '.join(self.cols)}",
+            f"Estadísticas descriptivas:\n{self.descriptive_stats}",
+            f"Promedio de salarios por título:\n{self.top_titles}",
+            f"Promedio de salarios por ubicación:\n{self.top_locations}",
+            f"Empresas con buenos puntajes:\n{self.top_companies['good']['length']}",
+            f"Empresas con malos puntajes:\n{self.top_companies['bad']['length']}"
+        ]
+        return '\n\n'.join(lines)
+
+
+"""
 def analizar_datos(df: DataFrame):
     print("Columnas disponibles:", df.columns.tolist())
 
     # Estadísticas descriptivas
     print("\nEstadísticas descriptivas:\n", df.describe(include='all'))
-
-    # Medidas de tendencia central y dispersión
-    salario = get_salaries_mean(df)
-    print("\nMedidas de tendencia central y dispersión:")
-    print("Media:", salario.mean())
-    print("Mediana:", salario.median())
-    print("Moda:", salario.mode().iloc[0])
-    print("Varianza:", salario.var())
-    print("Desviación estándar:", salario.std())
 
     # 1. Títulos de trabajo con mayores salarios
     print("\n1. Títulos de trabajo con mayores salarios:")
@@ -65,7 +96,13 @@ def analizar_datos(df: DataFrame):
         print(tipos)
     else:
         print("No hay columnas 'Company Score' o 'employment_type'.")
+"""
 
 
 if __name__ == "__main__":
-    analizar_datos(df)
+    from utils.get_final_db import get_final_db
+    df = get_final_db()
+
+    exploratory = Exploratory_Analysis(df)
+    print(exploratory.__str__())
+    # exploratory.create_descriptive_stats_csv()
