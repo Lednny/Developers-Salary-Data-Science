@@ -1,6 +1,17 @@
 from pandas import DataFrame, Series
 from utils.get_salaries_mean import get_salaries_mean
+import re
+import matplotlib.pyplot as plt
 
+def clean_salary(salary: str) -> float:
+    if isinstance(salary, str):
+        # Extraer el rango salarial (por ejemplo, "$92K - $116K")
+        match = re.findall(r"(\d+)[Kk]", salary)
+        if match:
+            # Convertir los valores a números y calcular el promedio
+            nums = [float(num) * 1000 for num in match]
+            return sum(nums) / len(nums)
+    return float('nan')
 
 def get_good_or_bad_companies(companies, scores, bad_threshold: int = 3) -> dict[str, dict[str, list[str]]]:
     if not isinstance(companies, Series) or not isinstance(scores, Series):
@@ -11,7 +22,7 @@ def get_good_or_bad_companies(companies, scores, bad_threshold: int = 3) -> dict
         if score > bad_threshold:
             stats['good']['companies'].append(company)
             stats['good']['length'] += 1
-            continue;
+            continue
         stats['bad']['companies'].append(company)
         stats['bad']['length'] += 1
     return stats
@@ -19,15 +30,16 @@ def get_good_or_bad_companies(companies, scores, bad_threshold: int = 3) -> dict
 
 class Exploratory_Analysis:
     def __init__(self, df: DataFrame):
-        self.df = df
-        self.cols = df.columns.tolist()
+        self.df = df.copy()
+        self.df['Salary'] = self.df['Salary'].apply(clean_salary)
+        self.df = self.df.dropna(subset=['Salary'])
+        print("Columnas disponibles en el DataFrame después de la limpieza:", self.df.columns)
+        self.cols = self.df.columns.tolist()
         self.descriptive_stats = self.df.describe(include='all')
-        self.salary = get_salaries_mean(self.df)
-        self.top_titles = self.salary.groupby(df['Job Title']).mean() # Paises por título
-        self.top_locations = self.salary.groupby(df['Location']).mean() # Paises por ubicación
-        self.companies_scores = self.df['Company'].groupby(df['Company Score'])
+        self.top_titles = self.df.groupby('Job Title')['Salary'].mean()  
+        self.top_locations = self.df.groupby('Location')['Salary'].mean()  
+        self.companies_scores = self.df.groupby('Company')['Company Score'].mean()  
         self.top_companies = get_good_or_bad_companies(self.df['Company'], self.df['Company Score'])
-
 
     def __str__(self):
         lines = [
@@ -39,65 +51,136 @@ class Exploratory_Analysis:
             f"Empresas con malos puntajes:\n{self.top_companies['bad']['length']}"
         ]
         return '\n\n'.join(lines)
+    
+    def run_analysis(self):
+        print("")
+        print("Ejecutando análisis...")
+        print("")
+        self.highest_paying_remote_jobs()
+        print("")
+        self.best_countries_for_software_engineers()
+        print("")
+        self.location_salary_analysis()
+        print("")
+        self.salary_low_rating_companies()
+        print("")
+        self.salary_variation_analysis()
+        print("")
+        self.employment_types_in_high_rated_companies()
+        print("")
 
+    # Pregunta 1: ¿Qué títulos de trabajo remoto ofrecen los salarios más altos?
+    def highest_paying_remote_jobs(self):
+        top_jobs = self.df.groupby('Job Title')['Salary'].mean().sort_values(ascending=False).head(10)
+        print("Títulos de trabajo remoto con los salarios más altos:")
+        print(top_jobs)
 
-"""
-def analizar_datos(df: DataFrame):
-    print("Columnas disponibles:", df.columns.tolist())
+        # Gráfica de barras
+        plt.figure(figsize=(10, 6))
+        top_jobs.plot(kind='bar', color='skyblue')
+        plt.title('Títulos de trabajo remoto con los salarios más altos', fontsize=14)
+        plt.xlabel('Título de trabajo', fontsize=12)
+        plt.ylabel('Salario promedio', fontsize=12)
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
 
-    # Estadísticas descriptivas
-    print("\nEstadísticas descriptivas:\n", df.describe(include='all'))
+    # Pregunta 2: ¿Qué países ofrecen mejores salarios para empleos remotos en ingeniería de software?
+    def best_countries_for_software_engineers(self):
+        if 'Location' not in self.df.columns:
+            print("Error: La columna 'Location' no está presente en el DataFrame.")
+            return
+        is_software_engineer = self.df['Job Title'].str.contains('engineer', case=False, na=False)
+        top_countries = self.df[is_software_engineer].groupby('Location')['Salary'].mean().sort_values(ascending=False).head(10)
+        print("Países con mejores salarios para empleos remotos en ingeniería de software:")
+        print(top_countries)
 
-    # 1. Títulos de trabajo con mayores salarios
-    print("\n1. Títulos de trabajo con mayores salarios:")
-    top_titles = df.groupby('job_title')['salary_in_usd'].mean().sort_values(ascending=False).head(10)
-    print(top_titles)
+        # Gráfica de barras
+        plt.figure(figsize=(10, 6))
+        top_countries.plot(kind='bar', color='orange')
+        plt.title('Países con mejores salarios para ingenieros de software', fontsize=14)
+        plt.xlabel('País', fontsize=12)
+        plt.ylabel('Salario promedio', fontsize=12)
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
 
-    # 2. Países con mejores salarios en ingeniería de software
-    print("\n2. Países con mejores salarios para empleos remotos en ingeniería de software:")
-    software_jobs = df[df['job_title'].str.contains("software", case=False)]
-    top_countries = software_jobs.groupby('employee_residence')['salary_in_usd'].mean().sort_values(ascending=False).head(10)
-    print(top_countries)
+    # Pregunta 3: ¿Cuáles son las ubicaciones más comunes para trabajos remotos y cómo varían los salarios entre ellas?
+    def location_salary_analysis(self):
+        common_locations = self.df['Location'].value_counts().head(10)
+        salary_by_location = self.df.groupby('Location')['Salary'].mean().sort_values(ascending=False)
+        print("Ubicaciones más comunes para trabajos remotos:")
+        print(common_locations)
+        print("\nSalarios promedio por ubicación:")
+        print(salary_by_location)
 
-    # 3. Ubicaciones más comunes y salarios
-    print("\n3. Ubicaciones más comunes para trabajos remotos:")
-    ubicaciones = df['employee_residence'].value_counts().head(10)
-    print(ubicaciones)
+        # Gráfica de barras
+        plt.figure(figsize=(10, 6))
+        common_locations.plot(kind='bar', color='green')
+        plt.title('Ubicaciones más comunes para trabajos remotos', fontsize=14)
+        plt.xlabel('Ubicación', fontsize=12)
+        plt.ylabel('Cantidad de trabajos', fontsize=12)
+        plt.xticks(rotation=45, ha='right')
+        plt.tight_layout()
+        plt.show()
 
-    print("\nSalarios promedio por ubicación:")
-    salarios_por_ubicacion = df.groupby('employee_residence')['salary_in_usd'].mean().sort_values(ascending=False).head(10)
-    print(salarios_por_ubicacion)
+    # Pregunta 4: ¿Qué tan competitivos son los salarios en trabajos remotos de empresas con baja calificación?
+    def salary_low_rating_companies(self):
+        if 'Company Score' not in self.df.columns or 'Salary' not in self.df.columns:
+            print("Error: Las columnas 'Company Score' o 'Salary' no están presentes en el DataFrame.")
+            return
+        low_rating_companies = self.df[self.df['Company Score'] < 3]
+        avg_salary = low_rating_companies['Salary'].mean()
+        print(f"Salario promedio en empresas con baja calificación: {avg_salary}")
 
-    # 4. Empresas grandes con baja calificación
-    if 'Company Score' in df.columns and 'company_size' in df.columns:
-        print("\n4. Salarios en empresas grandes con baja calificación (< 3.0):")
-        filtro = (df['Company Score'] < 3.0) & (df['company_size'].isin(['Large', 'Enterprise']))
-        empresas_filtradas = df[filtro]
-        print("Salario medio:", empresas_filtradas['salary_in_usd'].mean())
-        print("Cantidad de registros:", len(empresas_filtradas))
-    else:
-        print("No hay columnas 'Company Score' o 'company_size'.")
+        # Gráfica de barras
+        plt.figure(figsize=(6, 4))
+        plt.bar(['Empresas con baja calificación'], [avg_salary], color='red')
+        plt.title('Salario promedio en empresas con baja calificación', fontsize=14)
+        plt.ylabel('Salario promedio', fontsize=12)
+        plt.tight_layout()
+        plt.show()
 
-    # 5. Variación salarial: ubicación vs tamaño empresa
-    if 'company_size' in df.columns:
-        print("\n5. ¿Varían más los salarios por ubicación o tamaño de empresa?")
-        var_por_ubicacion = df.groupby('employee_residence')['salary_in_usd'].var().mean()
-        var_por_empresa = df.groupby('company_size')['salary_in_usd'].var().mean()
-        print("Varianza promedio por ubicación:", var_por_ubicacion)
-        print("Varianza promedio por tamaño de empresa:", var_por_empresa)
-    else:
-        print("No hay columna 'company_size'.")
+    # Pregunta 5: ¿Los salarios en trabajos remotos varían más según la ubicación o según la empresa?
+    def salary_variation_analysis(self):
+        if 'Location' not in self.df.columns or 'Company' not in self.df.columns:
+            print("Error: Las columnas 'Location' o 'Company' no están presentes en el DataFrame.")
+            return
+        variation_by_location = self.df.groupby('Location')['Salary'].std().mean()
+        variation_by_company = self.df.groupby('Company')['Salary'].std().mean()
+        print(f"Variación promedio de salarios por ubicación: {variation_by_location}")
+        print(f"Variación promedio de salarios por empresa: {variation_by_company}")
 
-    # 6. Tipos de empleo en empresas con alta calificación
-    if 'Company Score' in df.columns and 'employment_type' in df.columns:
-        print("\n6. Tipos de empleo en empresas con alta calificación (>= 4.0):")
-        top_empresas = df[df['Company Score'] >= 4.0]
-        tipos = top_empresas['employment_type'].value_counts()
-        print(tipos)
-    else:
-        print("No hay columnas 'Company Score' o 'employment_type'.")
-"""
+        # Gráfica de barras
+        plt.figure(figsize=(6, 4))
+        plt.bar(['Ubicación', 'Empresa'], [variation_by_location, variation_by_company], color=['blue', 'purple'])
+        plt.title('Variación promedio de salarios', fontsize=14)
+        plt.ylabel('Variación promedio', fontsize=12)
+        plt.tight_layout()
+        plt.show()
 
+    # Pregunta 6: ¿Qué tipos de empleo remoto (full-time, contract, freelance) predominan en empresas con alta calificación?
+    def employment_types_in_high_rated_companies(self):
+        if 'Company Score' not in self.df.columns or 'Job Title' not in self.df.columns:
+            print("Error: Las columnas 'Company Score' o 'Job Title' no están presentes en el DataFrame.")
+            return
+        high_rated_companies = self.df[self.df['Company Score'] >= 4]
+        employment_type_counts = high_rated_companies['Job Title'].value_counts().head(10)
+        print("Tipos de empleo remoto predominantes en empresas con alta calificación:")
+        print(employment_type_counts)
+
+        # Gráfica circular mejorada
+        plt.figure(figsize=(8, 8)) 
+        employment_type_counts.plot(
+            kind='pie',
+            autopct='%1.1f%%',
+            startangle=140,
+            colors=['gold', 'lightblue', 'lightgreen', 'coral', 'violet', 'cyan', 'pink', 'gray', 'brown', 'purple'],
+        )
+        plt.title('Distribución de tipos de empleo en empresas con alta calificación (Top 10)', fontsize=14)
+        plt.ylabel('') 
+        plt.tight_layout()
+        plt.show()
 
 if __name__ == "__main__":
     from utils.get_final_db import get_final_db
@@ -105,4 +188,4 @@ if __name__ == "__main__":
 
     exploratory = Exploratory_Analysis(df)
     print(exploratory.__str__())
-    # exploratory.create_descriptive_stats_csv()
+    exploratory.run_analysis()
