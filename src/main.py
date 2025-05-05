@@ -12,6 +12,7 @@ def main():
     SALARIES: pd.Series = get_salaries_mean(DATA)
 
     pearson = Pearson_Correlation(DATA['Company Score'], SALARIES)
+    pearson.show_graphics()
     print(pearson.__str__(), end='\n\n')
 
     central_tendency = Central_Tendency(SALARIES)
