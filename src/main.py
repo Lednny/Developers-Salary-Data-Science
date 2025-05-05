@@ -19,9 +19,8 @@ def main():
 
     exploratory = Exploratory_Analysis(DATA)
     print(exploratory.__str__())
-    results = exploratory.run_analysis()
-    print(results, end='\n\n')
-    print("Análisis completo.")
+    exploratory.run_analysis()
+
 
 if __name__ == "__main__":
     main()

@@ -36,9 +36,9 @@ class Exploratory_Analysis:
         print("Columnas disponibles en el DataFrame después de la limpieza:", self.df.columns)
         self.cols = self.df.columns.tolist()
         self.descriptive_stats = self.df.describe(include='all')
-        self.top_titles = self.df.groupby('Job Title')['Salary'].mean()  
-        self.top_locations = self.df.groupby('Location')['Salary'].mean()  
-        self.companies_scores = self.df.groupby('Company')['Company Score'].mean()  
+        self.top_titles = self.df.groupby('Job Title')['Salary'].mean()
+        self.top_locations = self.df.groupby('Location')['Salary'].mean()
+        self.companies_scores = self.df.groupby('Company')['Company Score'].mean()
         self.top_companies = get_good_or_bad_companies(self.df['Company'], self.df['Company Score'])
 
     def __str__(self):
@@ -51,23 +51,22 @@ class Exploratory_Analysis:
             f"Empresas con malos puntajes:\n{self.top_companies['bad']['length']}"
         ]
         return '\n\n'.join(lines)
-    
+
     def run_analysis(self):
-        print("")
-        print("Ejecutando análisis...")
-        print("")
+        print("\nEjecutando análisis...\n")
         self.highest_paying_remote_jobs()
-        print("")
+        print()
         self.best_countries_for_software_engineers()
-        print("")
+        print()
         self.location_salary_analysis()
-        print("")
+        print()
         self.salary_low_rating_companies()
-        print("")
+        print()
         self.salary_variation_analysis()
-        print("")
+        print()
         self.employment_types_in_high_rated_companies()
-        print("")
+        print()
+        print("Análisis completo.")
 
     # Pregunta 1: ¿Qué títulos de trabajo remoto ofrecen los salarios más altos?
     def highest_paying_remote_jobs(self):
@@ -170,7 +169,7 @@ class Exploratory_Analysis:
         print(employment_type_counts)
 
         # Gráfica circular mejorada
-        plt.figure(figsize=(8, 8)) 
+        plt.figure(figsize=(8, 8))
         employment_type_counts.plot(
             kind='pie',
             autopct='%1.1f%%',
@@ -178,7 +177,7 @@ class Exploratory_Analysis:
             colors=['gold', 'lightblue', 'lightgreen', 'coral', 'violet', 'cyan', 'pink', 'gray', 'brown', 'purple'],
         )
         plt.title('Distribución de tipos de empleo en empresas con alta calificación (Top 10)', fontsize=14)
-        plt.ylabel('') 
+        plt.ylabel('')
         plt.tight_layout()
         plt.show()
 
