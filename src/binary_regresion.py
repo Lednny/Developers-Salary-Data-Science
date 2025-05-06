@@ -8,7 +8,7 @@ from utils.get_salaries_mean import get_salaries_mean
 
 
 class Binary_Regression:
-    def __init__(self, DATA: pd.DataFrame):
+    def __init__(self, DATA: pd.DataFrame) -> None:
         DATA["Salary"] = get_salaries_mean(DATA)
         self.df = DATA
 
@@ -32,7 +32,7 @@ class Binary_Regression:
         self.y_prob = self.model.predict_proba(self.X_test)[:,1]
 
 
-    def __str__(self):
+    def __str__(self) -> str:
         lines = [
             "Matriz de confusion:",
             f"{confusion_matrix(self.y_test, self.y_pred)}",
@@ -43,7 +43,7 @@ class Binary_Regression:
         return "\n".join(lines)
 
 
-    def build_graphic(self):
+    def show_graphics(self) -> None:
         fpr, tpr, _ = roc_curve(self.y_test, self.y_prob)
         plt.figure(figsize=(8, 6))
         plt.plot(fpr, tpr, label="Regresión Logística (AUC = {:.2f})".format(roc_auc_score(self.y_test, self.y_prob)))
