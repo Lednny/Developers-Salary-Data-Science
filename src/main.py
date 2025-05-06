@@ -1,5 +1,6 @@
 from central_tendency import Central_Tendency
 from pearson import Pearson_Correlation
+from binary_regresion import Binary_Regression
 from exploratory import Exploratory_Analysis
 from utils.get_salaries_mean import get_salaries_mean
 from utils.get_final_db import get_final_db
@@ -14,6 +15,10 @@ def main():
     pearson = Pearson_Correlation(DATA['Company Score'], SALARIES)
     pearson.show_graphics()
     print(pearson.__str__(), end='\n\n')
+
+    binary_regression = Binary_Regression(DATA)
+    binary_regression.show_graphics()
+    print(binary_regression.__str__(), end='\n\n')
 
     central_tendency = Central_Tendency(SALARIES)
     print(central_tendency.__str__(), end='\n\n')
