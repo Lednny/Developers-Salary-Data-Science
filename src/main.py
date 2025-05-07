@@ -25,7 +25,7 @@ def main():
 
     exploratory = Exploratory_Analysis(DATA)
     print(exploratory.__str__())
-    exploratory.run_analysis()
+    print(exploratory.run_analysis())
 
 
 if __name__ == "__main__":
