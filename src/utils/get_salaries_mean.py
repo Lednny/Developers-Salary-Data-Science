@@ -3,7 +3,9 @@ import re
 
 
 def calculate_salary_mean(salary) -> float:
-    if not isinstance(salary, str):
+    if isinstance(salary, float):
+        return salary
+    elif not isinstance(salary, str):
         return 0
 
     nums = re.findall(r'\$?(\d+)[Kk]', salary)
