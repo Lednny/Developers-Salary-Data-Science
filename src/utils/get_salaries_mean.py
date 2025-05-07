@@ -3,6 +3,9 @@ import re
 
 
 def calculate_salary_mean(salary) -> float:
+    if not isinstance(salary, str):
+        return 0
+
     nums = re.findall(r'\$?(\d+)[Kk]', salary)
 
     if len(nums) == 2:
@@ -24,8 +27,8 @@ def calculate_salary_mean(salary) -> float:
     return 0
 
 
-def get_salaries_mean(df: DataFrame) -> Series:
-    salaries = df['Salary']
+def get_salaries_mean(df: DataFrame, col: str = 'Salary') -> Series:
+    salaries = df[col]
 
     if not isinstance(salaries, Series):
         raise ValueError("Input data must be a pandas Series")
