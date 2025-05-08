@@ -2,7 +2,7 @@ from central_tendency import Central_Tendency
 from pearson import Pearson_Correlation
 from binary_regresion import Binary_Regression
 from exploratory import Exploratory_Analysis
-from linear_regression import Simple_Linear_Regression
+from linear_regression import Simple_Linear_Regression, Multiple_Linear_Regression
 from utils.get_salaries_mean import get_salaries_mean
 from utils.get_final_db import get_final_db
 import pandas as pd
@@ -32,6 +32,10 @@ def main():
     linear_regression = Simple_Linear_Regression(DATA)
     print(linear_regression.__str__())
     linear_regression.show_graphics()
+
+    multiple_regression = Multiple_Linear_Regression(DATA)
+    print(multiple_regression.__str__())
+    multiple_regression.show_graphics()
 
 
 if __name__ == "__main__":
