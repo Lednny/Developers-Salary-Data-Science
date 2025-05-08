@@ -23,8 +23,8 @@ class Exploratory_Analysis:
             f"Estadísticas descriptivas:\n{self.descriptive_stats}",
             f"Promedio de salarios por título:\n{self.top_titles}",
             f"Promedio de salarios por ubicación:\n{self.top_locations}",
-            f"Empresas con buenos puntajes:\n{self.top_companies['good']}",
-            f"Empresas con malos puntajes:\n{self.top_companies['bad']}"
+            f"Empresas con buenos puntajes:\n{", ".join(self.top_companies['good']['companies'][:10])}...",
+            f"Empresas con malos puntajes:\n{", ".join(self.top_companies['bad']['companies'][:10])}..."
         ]
         return '\n\n'.join(lines)
 
