@@ -31,22 +31,27 @@ class Binary_Regression:
         self.y_pred = self.model.predict(self.X_test)
         self.y_prob = self.model.predict_proba(self.X_test)[:,1]
 
+        self.confusion_matrix = confusion_matrix(self.y_test, self.y_pred)
+        self.classification_report = classification_report(self.y_test, self.y_pred)
+        self.roc_auc_score = roc_auc_score(self.y_test, self.y_prob)
+
+        self.fpr, self.tpr, _ = roc_curve(self.y_test, self.y_prob)
+
 
     def __str__(self) -> str:
         lines = [
             "Matriz de confusion:",
-            f"{confusion_matrix(self.y_test, self.y_pred)}",
+            f"{self.confusion_matrix}",
             "\nReporte de clasificación:",
-            f"{classification_report(self.y_test, self.y_pred)}"
-            f"ROC AUC Score: {roc_auc_score(self.y_test, self.y_prob):.4f}"
+            f"{self.classification_report}"
+            f"ROC AUC Score: {roc_auc_score:.4f}"
         ]
         return "\n".join(lines)
 
 
     def show_graphics(self) -> None:
-        fpr, tpr, _ = roc_curve(self.y_test, self.y_prob)
         plt.figure(figsize=(8, 6))
-        plt.plot(fpr, tpr, label="Regresión Logística (AUC = {:.2f})".format(roc_auc_score(self.y_test, self.y_prob)))
+        plt.plot(self.fpr, self.tpr, label="Regresión Logística (AUC = {:.2f})".format(roc_auc_score(self.y_test, self.y_prob)))
         plt.plot([0,1],[0,1],'k--')
         plt.xlabel("Tasa de falsos positivos")
         plt.ylabel("Tasa de verdaderos positivos")
