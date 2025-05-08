@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from sklearn.linear_model import LogisticRegression
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score, roc_curve
+from sklearn.metrics import ConfusionMatrixDisplay, classification_report, confusion_matrix, roc_auc_score, roc_curve
 from utils.get_salaries_mean import get_salaries_mean
 
 
@@ -44,14 +44,14 @@ class Binary_Regression:
             f"{self.confusion_matrix}",
             "\nReporte de clasificación:",
             f"{self.classification_report}"
-            f"ROC AUC Score: {roc_auc_score:.4f}"
+            f"ROC AUC Score: {self.roc_auc_score:.4f}"
         ]
         return "\n".join(lines)
 
 
     def show_graphics(self) -> None:
         plt.figure(figsize=(8, 6))
-        plt.plot(self.fpr, self.tpr, label="Regresión Logística (AUC = {:.2f})".format(roc_auc_score(self.y_test, self.y_prob)))
+        plt.plot(self.fpr, self.tpr, label="Regresión Logística (AUC = {:.2f})".format(self.roc_auc_score))
         plt.plot([0,1],[0,1],'k--')
         plt.xlabel("Tasa de falsos positivos")
         plt.ylabel("Tasa de verdaderos positivos")
@@ -61,9 +61,18 @@ class Binary_Regression:
         plt.show()
 
 
+    def show_confusion_matrix(self):
+        disp = ConfusionMatrixDisplay(confusion_matrix=self.confusion_matrix, display_labels=["Clase 0", "Clase 1"])
+        disp.plot(cmap=plt.cm.Blues)
+        plt.title("Matriz de Confusón - Regresión Binaria")
+        plt.grid(False)
+        plt.show()
+
+
 if __name__ == "__main__":
     from utils.get_final_db import get_final_db
     df = get_final_db()
     binary_regression = Binary_Regression(df)
     print(binary_regression.__str__())
     binary_regression.show_graphics()
+    binary_regression.show_confusion_matrix()
