@@ -1,7 +1,8 @@
-from pandas import Series
-import numpy as np
-import matplotlib.pyplot as plt
+from pandas import Series, DataFrame
 from scipy.stats import pearsonr
+from seaborn import heatmap
+from numpy import polyfit
+import matplotlib.pyplot as plt
 
 
 def valid_cols(col1, col2):
@@ -22,10 +23,14 @@ class Pearson_Correlation:
         return self.col1.corr(self.col2)
 
 
+    def __str__(self) -> str:
+        return f"Coeficiente de correlación de Pearson: {self.corr:.4f}\nValor p: {self.p_value:.4e}"
+
+
     def show_graphics(self) -> bool:
         plt.figure(figsize=(8,6))
         plt.scatter(self.col1, self.col2, color='blue', label='Datos')
-        m, b = np.polyfit(self.col1, self.col2, 1)  # línea de tendencia
+        m, b = polyfit(self.col1, self.col2, 1)  # línea de tendencia
         plt.plot(self.col1, m * self.col1 + b, color='red', label='Línea de regresión')
         plt.title(f"Correlación de Pearson: {self.corr:.2f}")
         plt.xlabel('X')
@@ -37,8 +42,16 @@ class Pearson_Correlation:
         return True
 
 
-    def __str__(self) -> str:
-        return f"Coeficiente de correlación de Pearson: {self.corr:.4f}\nValor p: {self.p_value:.4e}"
+    def show_heat_map(self):
+        data = DataFrame(
+            [[1, self.corr], [self.corr, 1]],
+            index=['col1', 'col2'],
+            columns=['col1', 'col2']
+        )
+        plt.figure(figsize=(6, 5))
+        heatmap(data, annot=True, cmap='coolwarm', center=0, linewidths=0.5)
+        plt.title('Matriz de Correlacion de Pearson')
+        plt.show()
 
 
 if __name__ == '__main__':
@@ -49,3 +62,4 @@ if __name__ == '__main__':
     pearson = Pearson_Correlation(df['Company Score'], salaries)
     print(pearson.__str__())
     pearson.show_graphics()
+    pearson.show_heat_map()

@@ -14,6 +14,7 @@ def main():
 
     pearson = Pearson_Correlation(DATA['Company Score'], SALARIES)
     pearson.show_graphics()
+    pearson.show_heat_map()
     print(pearson.__str__(), end='\n\n')
 
     binary_regression = Binary_Regression(DATA)
