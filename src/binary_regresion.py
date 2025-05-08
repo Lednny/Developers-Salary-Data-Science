@@ -61,4 +61,4 @@ if __name__ == "__main__":
     df = get_final_db()
     binary_regression = Binary_Regression(df)
     print(binary_regression.__str__())
-    binary_regression.build_graphic()
+    binary_regression.show_graphics()
