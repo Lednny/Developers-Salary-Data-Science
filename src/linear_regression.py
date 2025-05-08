@@ -1,14 +1,14 @@
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_squared_error, r2_score
 from utils.get_salaries_mean import get_salaries_mean
+from pandas import DataFrame
+from numpy import sqrt
+from matplotlib import pyplot as plt
 
 
 class Simple_Linear_Regression:
-    def __init__(self, DATA: pd.DataFrame) -> None:
+    def __init__(self, DATA: DataFrame) -> None:
         # Preprocesamiento de datos
         DATA["Salary"] = get_salaries_mean(DATA)
         self.df = DATA
@@ -28,7 +28,7 @@ class Simple_Linear_Regression:
         self.y_pred = self.model.predict(self.X_test)
 
         # Métricas
-        self.rmse = np.sqrt(mean_squared_error(self.y_test, self.y_pred))
+        self.rmse = sqrt(mean_squared_error(self.y_test, self.y_pred))
         self.r2 = r2_score(self.y_test, self.y_pred)
 
         # Coeficientes
