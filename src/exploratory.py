@@ -59,7 +59,7 @@ class Exploratory_Analysis:
         return f"Títulos de trabajo remoto con los salarios más altos:\n{top_jobs}"
 
 
-    # Pregunta 2: ¿Qué países ofrecen mejores salarios para empleos remotos en ingeniería de software?
+    # Pregunta 2: ¿Qué ciudades de EUA ofrecen mejores salarios para empleos remotos en ingeniería de software?
     def best_countries_for_software_engineers(self) -> str:
         if 'Location' not in self.df.columns:
             return "best_countries_for_software_engineers: Error: La columna 'Location' no está presente en el DataFrame."
@@ -69,20 +69,24 @@ class Exploratory_Analysis:
         # Gráfica de barras
         plt.figure(figsize=(10, 6))
         top_countries.plot(kind='bar', color='orange')
-        plt.title('Países con mejores salarios para ingenieros de software', fontsize=14)
+        plt.title('Ciudades de EUA con mejores salarios para ingenieros de software', fontsize=14)
         plt.xlabel('País', fontsize=12)
         plt.ylabel('Salario promedio', fontsize=12)
         plt.xticks(rotation=45, ha='right')
         plt.tight_layout()
         plt.show()
 
-        return f"Países con mejores salarios para empleos remotos en ingeniería de software:\n{top_countries}"
-
+        return f"Ciudades de EUA con mejores salarios para empleos remotos en ingeniería de software:\n{top_countries}"
 
     # Pregunta 3: ¿Cuáles son las ubicaciones más comunes para trabajos remotos y cómo varían los salarios entre ellas?
     def location_salary_analysis(self) -> str:
-        common_locations = self.df['Location'].value_counts().head(10)
-        salary_by_location = self.df.groupby('Location')['Salary'].mean().sort_values(ascending=False)
+        if 'Location' not in self.df.columns:
+            return "location_salary_analysis: Error: La columna 'Location' no está presente en el DataFrame."
+        filtered_df = self.df[~self.df['Location'].isin(['EUA', 'Remote'])]
+        if filtered_df.empty:
+            return "location_salary_analysis: Error: No hay datos después de filtrar las ubicaciones 'EUA' y 'Remote'."
+        common_locations = filtered_df['Location'].value_counts().head(10)
+        salary_by_location = filtered_df.groupby('Location')['Salary'].mean().sort_values(ascending=False)
 
         # Gráfica de barras
         plt.figure(figsize=(10, 6))
