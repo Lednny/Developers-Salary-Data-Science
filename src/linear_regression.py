@@ -7,7 +7,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 from utils.get_salaries_mean import get_salaries_mean
 
 
-class Linear_Regression:
+class Simple_Linear_Regression:
     def __init__(self, DATA: pd.DataFrame) -> None:
         # Preprocesamiento de datos
         DATA["Salary"] = get_salaries_mean(DATA)
@@ -61,6 +61,6 @@ class Linear_Regression:
 if __name__ == "__main__":
     from utils.get_final_db import get_final_db
     df = get_final_db()
-    linear_regression = Linear_Regression(df)
+    linear_regression = Simple_Linear_Regression(df)
     print(linear_regression.__str__())
     linear_regression.show_graphics()
