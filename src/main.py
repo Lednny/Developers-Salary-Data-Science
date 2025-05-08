@@ -27,6 +27,10 @@ def main():
     exploratory = Exploratory_Analysis(DATA)
     print(exploratory.__str__())
     print(exploratory.run_analysis())
+    
+    linear_regression = Linear_Regression(df)
+    print(linear_regression.__str__())
+    linear_regression.show_graphics()
 
 
 if __name__ == "__main__":
