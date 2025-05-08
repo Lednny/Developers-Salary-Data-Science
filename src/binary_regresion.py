@@ -43,7 +43,7 @@ class Binary_Regression:
             "Matriz de confusion:",
             f"{self.confusion_matrix}",
             "\nReporte de clasificación:",
-            f"{self.classification_report}"
+            f"{self.classification_report}",
             f"ROC AUC Score: {self.roc_auc_score:.4f}"
         ]
         return "\n".join(lines)

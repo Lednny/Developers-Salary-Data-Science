@@ -9,7 +9,7 @@ import pandas as pd
 
 
 def main():
-    DATA = get_final_db()
+    DATA: pd.DataFrame = get_final_db()
 
     SALARIES: pd.Series = get_salaries_mean(DATA)
 
@@ -28,8 +28,8 @@ def main():
     exploratory = Exploratory_Analysis(DATA)
     print(exploratory.__str__())
     print(exploratory.run_analysis())
-    
-    linear_regression = Linear_Regression(df)
+
+    linear_regression = Linear_Regression(DATA)
     print(linear_regression.__str__())
     linear_regression.show_graphics()
 
