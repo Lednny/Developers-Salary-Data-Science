@@ -35,6 +35,10 @@ def main():
 
     central_tendency.plot_central_tendency()
     central_tendency.plot_variance_and_std()
+    multiple_regression = Multiple_Linear_Regression(DATA)
+    print(multiple_regression.__str__())
+    multiple_regression.show_graphics()
+
 
 if __name__ == "__main__":
     main()
