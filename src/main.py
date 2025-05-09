@@ -33,6 +33,8 @@ def main():
     print(linear_regression.__str__())
     linear_regression.show_graphics()
 
+    central_tendency.plot_central_tendency()
+    central_tendency.plot_variance_and_std()
 
 if __name__ == "__main__":
     main()
