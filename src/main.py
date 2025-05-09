@@ -2,7 +2,7 @@ from central_tendency import Central_Tendency
 from pearson import Pearson_Correlation
 from binary_regresion import Binary_Regression
 from exploratory import Exploratory_Analysis
-from linear_regression import Simple_Linear_Regression
+from linear_regression import Simple_Linear_Regression, Multiple_Linear_Regression
 from utils.get_salaries_mean import get_salaries_mean
 from utils.get_final_db import get_final_db
 import pandas as pd
