@@ -88,6 +88,9 @@ class Exploratory_Analysis:
         common_locations = filtered_df['Location'].value_counts().head(10)
         salary_by_location = filtered_df.groupby('Location')['Salary'].mean().sort_values(ascending=False)
 
+        if "United States" in common_locations:
+            del common_locations["United States"]
+
         # Gráfica de barras
         plt.figure(figsize=(10, 6))
         common_locations.plot(kind='bar', color='green')
@@ -165,5 +168,6 @@ if __name__ == "__main__":
     df = get_final_db()
 
     exploratory = Exploratory_Analysis(df)
-    print(exploratory.__str__())
-    print(exploratory.run_analysis())
+    exploratory.location_salary_analysis()
+    # print(exploratory.__str__())
+    # print(exploratory.run_analysis())
