@@ -1,86 +1,52 @@
-# data-science-final-project
+# Developers Salary Data Science
 
-## Iniciar el proyecto
+This repository contains a data analysis project focused on developer salaries using data science techniques. The goal is to explore, visualize, and extract meaningful insights from a dataset covering compensation in the tech sector.
 
-### Hacer un fork del repositorio
+## Contents
 
-- Ve a https://github.com/diegodev18/data-science-final-project
-- Haz clic en el botón "Fork" en la esquina superior derecha de la página.
+- **Data Exploration:** Descriptive analysis of the dataset.
+- **Visualization:** Charts and visualizations of salary trends.
+- **Modeling:** Application of statistical or machine learning models to predict salaries.
+- **Conclusions:** Key insights from the analysis.
 
-### Clonar tu fork del repositorio
+## Repository Structure
 
-```bash
-git clone git@github.com:<your_username>/data-science-final-project.git
+```
+.
+├── data/              # Datasets used for analysis
+├── notebooks/         # Jupyter Notebooks with analysis and visualizations
+├── src/               # Scripts for data processing and modeling
+├── README.md          # This file
 ```
 
-> Recuerda que debes usar SSH para clonar el repositorio y poder contribuir al proyecto.
+## Requirements
 
-### Crear un entorno virtual con:
+- Python 3.7+
+- Pandas
+- NumPy
+- Matplotlib / Seaborn
+- Jupyter Notebook (optional)
 
-#### Windows
-
-```bash
-py -m venv .env
-```
-
-#### macOS/Linux
-
-```bash
-python3 -m venv .env
-```
-
-### Entra en el entorno virtual
-
-#### Windows
-
-```bash
-.env\Scripts\activate
-```
-
-#### macOS/Linux
-
-```bash
-source .env/bin/activate
-```
-
-### Instalar las dependencias
-
-#### Windows
+Install dependencies with:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-#### macOS/Linux
+## Usage
 
-```bash
-pip3 install -r requirements.txt
-```
+1. Download or clone this repository.
+2. Place the dataset in the `data/` folder.
+3. Run the notebooks in the `notebooks/` folder to view the analysis and visualizations.
 
-### Descargar el dataset
+## Dataset
 
-#### Windows
+The dataset includes information about salaries, experience, location, technologies, and other relevant factors for developers in different regions.
 
-```bash
-py download_db.py
-```
+## Contributing
 
-#### macOS/Linux
+Contributions are welcome! You can open Issues or submit Pull Requests to improve the analysis or add new features.
 
-```bash
-python3 download_db.py
-```
+## License
 
-### Ejecutar el proyecto
-
-#### Windows
-
-```bash
-python src/main.py
-```
-
-#### macOS/Linux
-
-```bash
-python3 src/main.py
-```
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
